@@ -1,11 +1,21 @@
 using InfrastructureLibrary.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using DomainLibrary.IRepositories;
+using InfrastructureLibrary.Data;
+using AppLibrary.IService;
+using AppLibrary.Service;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 #region DI-s
+
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IProductService, ProductService>();
 
 #endregion
 
