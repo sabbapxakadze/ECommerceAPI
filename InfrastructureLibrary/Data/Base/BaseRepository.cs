@@ -1,49 +1,49 @@
-﻿using DomainLibrary.IRepositories.Base;
+﻿using Microsoft.EntityFrameworkCore;
+using DomainLibrary.IRepositories.Base;
 using InfrastructureLibrary.Context;
-using Microsoft.EntityFrameworkCore;
 
 namespace InfrastructureLibrary.Data.Base
 {
     public class BaseRepository<T> : IBaseRepository<T> where T : class
     {
-        /*
-            This is where we communicate with database,
-            and it stands for all the classes.              
-         */
         protected readonly AppDbContext _dbContext;
         public BaseRepository(AppDbContext dbContext)
         {
             _dbContext = dbContext;
         }
-        public T Add(T entity)
+
+        public async Task<T> AddAsync(T entity)  
         {
-            _dbContext.Set<T>().Add(entity);
+            await _dbContext.Set<T>().AddAsync(entity);
+            await _dbContext.SaveChangesAsync();
             return entity;
         }
 
-        public void Delete(T entity)
+        public async void Delete(T entity)
         {
             _dbContext.Set<T>().Remove(entity);
+            await _dbContext.SaveChangesAsync();
         }
 
-        public IReadOnlyList<T> GetAll()
+        public async Task<IReadOnlyList<T>> GetAllAsync() 
         {
-            return _dbContext.Set<T>().ToList();
+            return await _dbContext.Set<T>().ToListAsync();
         }
 
-        public T GetById(Guid id)
+        public async Task<T?> GetByIdAsync(int id)  
         {
-            return _dbContext.Set<T>().Find(id);
+            return await _dbContext.Set<T>().FindAsync(id);
         }
 
-        public void Update(T entity)
+        public async void Update(T entity)
         {
             _dbContext.Entry(entity).State = EntityState.Modified;
+            await _dbContext.SaveChangesAsync();
         }
 
-        public void SaveChanges()
+        public async Task SaveChangesAsync()  
         {
-            _dbContext.SaveChanges();
+            await _dbContext.SaveChangesAsync();
         }
     }
 }

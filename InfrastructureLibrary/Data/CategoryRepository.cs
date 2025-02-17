@@ -13,6 +13,11 @@ namespace InfrastructureLibrary.Data
 
         }
 
+        public async Task<List<Category>> GetAllCategoriesAsync()
+        {
+            return await _dbContext.Categories.ToListAsync();
+        }
+
         public async Task<Category?> GetCategoryWithProductsAsync(int categoryId)
         {
             return await _dbContext.Categories

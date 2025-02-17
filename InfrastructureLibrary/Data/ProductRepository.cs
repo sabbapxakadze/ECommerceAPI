@@ -12,6 +12,12 @@ namespace InfrastructureLibrary.Data
         {
 
         }
+
+        public async Task<List<Product>> GetAllProductAsync()
+        {
+            return await _dbContext.Products.ToListAsync();
+        }
+
         public async Task<List<Product>> GetProductsByCategoryIdAsync(int categoryId)
         {
             return await _dbContext.Products

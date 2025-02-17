@@ -5,6 +5,7 @@ namespace DomainLibrary.IRepositories
 {
     public interface IProductRepository : IBaseRepository<Product>
     {
+        public Task<List<Product>> GetAllProductAsync();
         public Task<List<Product>> GetProductsByCategoryIdAsync(int categoryId);
     }
 }
