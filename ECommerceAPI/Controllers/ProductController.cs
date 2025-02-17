@@ -2,6 +2,7 @@
 using AppLibrary.IService;
 using AutoMapper;
 using DomainLibrary.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -52,7 +53,9 @@ namespace ECommerceAPI.Controllers
             return Ok(res);
         }
 
+
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteById(int id)
         {
             var res = await _productService.GetByIdAsync(id);
@@ -66,6 +69,7 @@ namespace ECommerceAPI.Controllers
         }
 
         [HttpPatch("id")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> UpdateById(int id, [FromBody] ProductUpdateDto productDto)
         {
             var product = await _productService.GetByIdAsync(id);
@@ -83,6 +87,7 @@ namespace ECommerceAPI.Controllers
         }
 
         [HttpPost("id")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create([FromBody] ProductCreateDto productDto)
         {
             if (productDto == null || string.IsNullOrWhiteSpace(productDto.Name))
@@ -95,8 +100,6 @@ namespace ECommerceAPI.Controllers
 
             var productResponse = _mapper.Map<ProductCreateDto>(product);
             return CreatedAtAction(nameof(GetById), new { id = newProduct.Id }, newProduct);
-
         }
-
     }
 }

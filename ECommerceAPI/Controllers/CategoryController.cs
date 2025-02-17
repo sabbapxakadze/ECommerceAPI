@@ -2,6 +2,7 @@
 using AppLibrary.IService;
 using AutoMapper;
 using DomainLibrary.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -53,8 +54,8 @@ namespace ECommerceAPI.Controllers
             return Ok(res);
         }
 
-
         [HttpPost("Add")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> AddNewCategory([FromBody] CategoryCreateDto categoryDto)
         {
             if (categoryDto == null || string.IsNullOrWhiteSpace(categoryDto.Name))
@@ -71,6 +72,7 @@ namespace ECommerceAPI.Controllers
         }
 
         [HttpDelete("DeleteBy{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteCategory(int id)
         {
             var category = await _categoryService.GetCategoryByIdAsync(id);

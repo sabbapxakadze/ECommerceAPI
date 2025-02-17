@@ -32,6 +32,11 @@ namespace InfrastructureLibrary.Context
                 .HasOne(ci => ci.Product)
                 .WithMany()
                 .HasForeignKey(ci => ci.ProductId);
+
+            //Uniquely 1 cart for each user
+            modelBuilder.Entity<Cart>()
+            .HasIndex(c => c.UserId)
+            .IsUnique();
         }
     }
 }
